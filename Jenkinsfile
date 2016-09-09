@@ -8,9 +8,9 @@ node {
         env.GO15VENDOREXPERIMENT=1
 
 
-        stage 'Checkout'
-            git 'https://github.com/narikin/jenkins_pipeline_golang.git'
-
+        stage 'Checkout' {
+            checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/narikin/jenkins_pipeline_golang.git']]])
+        }
 
         stage 'Build'
             git 'go build -o fizzbuzz'
