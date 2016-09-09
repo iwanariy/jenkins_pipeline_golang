@@ -13,7 +13,7 @@ node {
         }
 
         stage 'Build'
-            git 'go build -o fizzbuzz'
+            sh 'go build -o fizzbuzz'
 
 
         stage 'Test'
