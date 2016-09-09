@@ -9,7 +9,7 @@ node {
 
 
         stage 'Checkout'
-            checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/narikin/jenkins_pipeline_golang.git']]])
+            git branch: '**', url: 'https://github.com/narikin/jenkins_pipeline_golang.git'
 
 
         stage 'Build'
