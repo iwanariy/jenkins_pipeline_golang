@@ -1,7 +1,11 @@
 package main
 
-func fizzbuzz(n string) string {
-	return ""
+import (
+	"strconv"
+)
+
+func fizzbuzz(n int) string {
+	return strconv.Itoa(n)
 }
 
 func main() {
