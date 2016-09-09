@@ -13,6 +13,7 @@ node {
 
 
         stage 'Build'
+            git 'go build'
 
 
         stage 'Test'
