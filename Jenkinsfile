@@ -9,6 +9,7 @@ node {
 
 
         stage 'Checkout'
+            git 'https://github.com/narikin/jenkins_pipeline_golang.git'
 
 
         stage 'Build'
