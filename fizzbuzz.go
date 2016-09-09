@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strconv"
 )
 
@@ -17,4 +18,5 @@ func fizzbuzz(n int) string {
 }
 
 func main() {
+	fmt.Println("fizzbuzz!")
 }
