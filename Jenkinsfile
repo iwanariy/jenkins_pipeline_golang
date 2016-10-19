@@ -1,22 +1,27 @@
 #!/usr/bin/env groovy
 
 node {
-    // FIXME: workaround because Go Plugin is not available in pipeline currently
-    withEnv(['GOROOT=/var/lib/jenkins/tools/org.jenkinsci.plugins.golang.GolangInstallation/Go_1.6.2/', 'PATH=/var/lib/jenkins/tools/org.jenkinsci.plugins.golang.GolangInstallation/Go_1.6.2/bin:$PATH']) {
-        stage('Setup') {
-            env.GOPATH='${JENKINS_HOME}/workspace/${JOB_NAME}/'
-            env.GO15VENDOREXPERIMENT=1
-        }
+  stage('Setup') {
+    // $GOROOT is required when installing to a custom location
+    // (default location is /usr/local/go/bin)
+    env.GOPATH='${WORKSPACE}'
+      env.GO15VENDOREXPERIMENT=1
+      sh 'go get github.com/stretchr/testify/assert'
+      sh 'go get github.com/jstemmer/go-junit-report'
+      sh 'go install github.com/jstemmer/go-junit-report'
+  }
 
-        stage('Checkout') {
-            checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/narikin/jenkins_pipeline_golang.git']]])
-        }
+  stage('Checkout') {
+    checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/narikin/jenkins_pipeline_golang.git']]])
+  }
 
-        stage('Build') {
-            sh 'go build -o fizzbuzz'
-        }
+  stage('Build') {
+    sh 'go build -o fizzbuzz'
+    archiveArtifacts 'fizzbuzz'
+  }
 
-        stage('Test') {
-        }
+  stage('Test') {
+    sh 'go test -v | ${GOPATH}/bin/go-junit-report > report.xml'
+    junit 'report.xml'
   }
 }
